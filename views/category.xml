@@ -1,0 +1,45 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="trufflesapp.tree_view_category">
+            <field name="name">Category</field>
+            <field name="model">trufflesapp.category</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                    <field name="description" />
+                    <field name="products" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="trufflesapp.form_view_category">
+            <field name="name">Info Category</field>
+            <field name="model">trufflesapp.category</field>
+            <field name="arch" type="xml">
+                <form string="Info Category">
+                    <group name="father_group">
+                        <group name="left_group">
+                            <field name="name" style="font-size:20px;font-weight bold;"/>
+                            <field name="description" />
+                            <field name="father" />
+                        </group>
+                        <group name="right_group">
+                            <field name="children" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Products">
+                            <field name="products" />
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+    </data>
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="trufflesapp.category_action_window">
+        <field name="name">Category</field>
+        <field name="res_model">trufflesapp.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

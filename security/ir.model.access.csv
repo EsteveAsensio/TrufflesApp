@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_trufflesapp_product, trufflesapp.product,model_trufflesapp_product,base.group_user,1,1,1,1
+access_trufflesapp_quality, trufflesapp.quality,model_trufflesapp_quality,base.group_user,1,1,1,1
+access_trufflesapp_weight, trufflesapp.weight,model_trufflesapp_weight,base.group_user,1,1,1,1
+access_trufflesapp_category, trufflesapp.category,model_trufflesapp_category,base.group_user,1,1,1,1
+access_trufflesapp_invoice, trufflesapp.invoice,model_trufflesapp_invoice,base.group_user,1,1,1,1
+access_trufflesapp_lines, trufflesapp.lines,model_trufflesapp_lines,base.group_user,1,1,1,1
+

@@ -1,0 +1,35 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="trufflesapp.tree_view_lines">
+            <field name="name">Lines</field>
+            <field name="model">trufflesapp.lines</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="productid" />
+                    <field name="weight" />
+                    <field name="totalprice" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="trufflesapp.form_view_lines">
+            <field name="name">Lines</field>
+            <field name="model">trufflesapp.lines</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Lines">
+                    <group name="father_group">
+                        <group name="left_group">
+                            <field name="productid" />
+                            <field name="weight" />
+                            <field name="totalprice" />
+                        </group>
+                        <group name="right_group">
+                            <field name="priceProduct" readonly="1" />
+                            <field name="weightProduct" readonly="1" />
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+    </data>
+
+</odoo>

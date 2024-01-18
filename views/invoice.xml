@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="trufflesapp.tree_view_invoice">
+            <field name="name">Invoice</field>
+            <field name="model">trufflesapp.invoice</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="references" />
+                    <field name="dateInvoice" />
+                    <field name="iva" />
+                    <field name="totalIva" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="trufflesapp.form_view_invoice">
+            <field name="name">Info Invoice</field>
+            <field name="model">trufflesapp.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Info Product">
+                    <header>
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group name="father_group">
+                            <group name="left_group">
+                                <field name="references" />
+                                <field name="dateInvoice" />
+                                <field name="base" />
+                                <field name="iva" />
+                                <field name="totalIva" />
+                            </group>
+                            <group name="right_group">
+                                <field name="customer" />
+                                <field name="description" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Invoice Lines">
+                                <field name="lines" />
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="trufflesapp.invoice_action_window">
+        <field name="name">Invoice</field>
+        <field name="res_model">trufflesapp.invoice</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

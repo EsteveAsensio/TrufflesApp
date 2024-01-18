@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="trufflesapp.tree_view_weight">
+            <field name="name">Weight</field>
+            <field name="model">trufflesapp.weight</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                    <field name="type" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="trufflesapp.form_view_weight">
+            <field name="name">Info Weight</field>
+            <field name="model">trufflesapp.weight</field>
+            <field name="arch" type="xml">
+                <form string="Info Weight">
+                    <group name="father_group">
+                        <group name="left_group">
+                            <field name="name" />
+                            <field name="type" />
+                            <field name="description" />
+                            <field name="product" />
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+    </data>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="trufflesapp.weight_action_window">
+        <field name="name">Weight</field>
+        <field name="res_model">trufflesapp.weight</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
