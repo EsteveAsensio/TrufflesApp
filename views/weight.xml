@@ -5,8 +5,8 @@
             <field name="model">trufflesapp.weight</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="name" />
                     <field name="type" />
+                    <field name="name" />
                 </tree>
             </field>
         </record>
@@ -17,7 +17,8 @@
                 <form string="Info Weight">
                     <group name="father_group">
                         <group name="left_group">
-                            <field name="name" />
+                            <field name="name" style="font-size:20px;font-weight bold;" />
+                            <field name="mesure" readonly="1"/>
                             <field name="type" />
                             <field name="description" />
                             <field name="product" />

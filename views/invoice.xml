@@ -19,25 +19,26 @@
             <field name="arch" type="xml">
                 <form string="Info Product">
                     <header>
+                        <button string="Confirm" type="object" name="confirmInvoice"/>
                         <field name="state" widget="statusbar" />
                     </header>
                     <sheet>
                         <group name="father_group">
                             <group name="left_group">
-                                <field name="references" />
-                                <field name="dateInvoice" />
-                                <field name="base" />
-                                <field name="iva" />
-                                <field name="totalIva" />
+                                <field name="references" attrs="{'readonly': [('state', '=', 'C')]}"/>
+                                <field name="dateInvoice" attrs="{'readonly': [('state', '=', 'C')]}"/>
+                                <field name="base" readonly="1"/>
+                                <field name="iva" attrs="{'readonly': [('state', '=', 'C')]}"/>
+                                <field name="totalIva" readonly="1" />
                             </group>
                             <group name="right_group">
-                                <field name="customer" />
-                                <field name="description" />
+                                <field name="customer" attrs="{'readonly': [('state', '=', 'C')]}"/>
+                                <field name="description" attrs="{'readonly': [('state', '=', 'C')]}"/>
                             </group>
                         </group>
                         <notebook>
                             <page string="Invoice Lines">
-                                <field name="lines" />
+                                <field name="lines" attrs="{'readonly': [('state', '=', 'C')]}"/>
                             </page>
                         </notebook>
                     </sheet>
