@@ -5,4 +5,5 @@ access_trufflesapp_weight, trufflesapp.weight,model_trufflesapp_weight,base.grou
 access_trufflesapp_category, trufflesapp.category,model_trufflesapp_category,base.group_user,1,1,1,1
 access_trufflesapp_invoice, trufflesapp.invoice,model_trufflesapp_invoice,base.group_user,1,1,1,1
 access_trufflesapp_lines, trufflesapp.lines,model_trufflesapp_lines,base.group_user,1,1,1,1
-
+access_trufflesapp_order, trufflesapp.order,model_trufflesapp_order,base.group_user,1,1,1,1
+access_trufflesapp_orderlines, trufflesapp.orderlines,model_trufflesapp_orderlines,base.group_user,1,1,1,1

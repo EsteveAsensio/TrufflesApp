@@ -1,8 +1,8 @@
 from odoo import models, fields, api
 
-class Lines(models.Model):
-    _name = 'trufflesapp.lines'
-    _description = 'The Invoice Lines'
+class Orderlines(models.Model):
+    _name = 'trufflesapp.orderlines'
+    _description = 'The Order Lines'
 
     productid=fields.Many2one("trufflesapp.product", string="Product", required=True)
     units=fields.Float(string="Units", default=1, required=True)
@@ -11,7 +11,7 @@ class Lines(models.Model):
     totalprice=fields.Float(string="Total Price", help="The total Price", compute="computeTotalPrice", required=True)
     priceProduct=fields.Float(string="Product Price", help="Price of the product", compute="getPrice", required=True)
     weightProduct=fields.Float(string="Product Weight", compute="getWeightProducts", help="Weight of the product") #Peso
-    invoiceid=fields.Many2one("trufflesapp.invoice", string="Invoice")
+    orderid=fields.Many2one("trufflesapp.order", string="Order")
 
     @api.depends("productid")
     def getMesure(self):

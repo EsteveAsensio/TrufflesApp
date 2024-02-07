@@ -1,0 +1,131 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="trufflesapp.tree_view_order">
+            <field name="name">Order</field>
+            <field name="model">trufflesapp.order</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="references" />
+                    <field name="vendor" />
+                    <field name="dateOrder" />
+                    <field name="iva" />
+                    <field name="totalIva" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="trufflesapp.form_view_order">
+            <field name="name">Info Order</field>
+            <field name="model">trufflesapp.order</field>
+            <field name="arch" type="xml">
+                <form string="Info Order">
+                    <header>
+                        <button string="Confirm" type="object" name="confirmOrder"
+                            confirm="¿Are you shure to Confirm a Order?"
+                            attrs="{'invisible': [('state', '!=', 'D')]}" />
+                        <button string="Desactivate" type="object" name="desactivateOrders"
+                            class="oe_highlight"
+                            confirm="¿Are you sure you want to deactivate all confirmed orders?" />
+
+                        <button string="Invoiced" type="object" name="invoiceOrder"
+                            confirm="¿Are you shure to Invoice a Order?"
+                            attrs="{'invisible': [('state', '!=', 'C')]}" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group name="father_group">
+                            <group name="left_group">
+                                <field name="references"
+                                    attrs="{'readonly': [('state', 'in', ('C', 'I'))]}" />
+                                <field name="dateOrder"
+                                    attrs="{'readonly': ['|',('state', '=','C'), ('state', '=','I')]}" />
+                                <field name="base" readonly="1" />
+                                <field name="iva"
+                                    attrs="{'readonly': [('state', 'in', ('C', 'I'))]}" />
+                                <field name="totalIva" readonly="1" />
+                            </group>
+                            <group name="right_group">
+                                <field name="vendor"
+                                    attrs="{'readonly': [('state', 'in', ('C', 'I'))]}" />
+                                <field name="invoice" readonly="1"
+                                    attrs="{'invisible': [('state', '!=', 'I')]}" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Products">
+                                <field name="lines"
+                                    attrs="{'readonly': [('state', 'in', ('C', 'I'))]}">
+                                    <form>
+                                        <group name="father_group">
+                                            <group name="left_group">
+                                                <field name="productid" />
+                                                <field name="units" />
+                                                <field name="totalprice" />
+                                                <field name="weight" readonly="1" />
+                                            </group>
+                                            <group name="right_group">
+                                                <field name="priceProduct" readonly="1" />
+                                                <field name="weightProduct" readonly="1" />
+                                                <field name="mesure" readonly="1" />
+                                                <field name="orderid" readonly="1" />
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+
+    <!-- Pivot -->
+    <record model="ir.ui.view" id="trufflesapp.pivot_order">
+        <field name="name">Order pivot</field>
+        <field name="model">trufflesapp.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Pivot order">
+                <field name="vendor" type="row" />
+                <field name="base" type="measure" widget="monetary" />
+                <field name="dateOrder" interval="month" />
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Gráfico -->
+    <record model="ir.ui.view" id="trufflesapp.graph_order">
+        <field name="name">Order graph</field>
+        <field name="model">trufflesapp.order</field>
+        <field name="arch" type="xml">
+            <graph string="Order Graph" type="pie">
+                <field name="vendor" type="row" />
+                <field name="dateOrder" interval="month" />
+                <field name="base" type="measure" widget="monetary" />
+            </graph>
+        </field>
+    </record>
+
+    <!-- Filter-->
+    <record model="ir.ui.view" id="trufflesapp.filter_order">
+        <field name="name">Order filter</field>
+        <field name="model">trufflesapp.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Draft Orders" name="draft" domain="[('state','=','D')]" />
+                <filter string="Confirmed Orders" name="confirmed" domain="[('state','=','C')]" />
+                <filter string="Invoiced Orders" name="invoiced" domain="[('state','=','I')]" />
+                <filter string="Deactivated Orders" name="deactivated"
+                    domain="[('active','=',False)]" />
+            </search>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="trufflesapp.order_action_window">
+        <field name="name">Order</field>
+        <field name="res_model">trufflesapp.order</field>
+        <field name="view_mode">tree,graph,pivot,form</field>
+    </record>
+</odoo>

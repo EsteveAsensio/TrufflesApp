@@ -1,8 +1,8 @@
 <odoo>
     <data>
-        <record model="ir.ui.view" id="trufflesapp.tree_view_lines">
+        <record model="ir.ui.view" id="trufflesapp.tree_view_orderlines">
             <field name="name">Lines</field>
-            <field name="model">trufflesapp.lines</field>
+            <field name="model">trufflesapp.orderlines</field>
             <field name="arch" type="xml">
                 <tree>
                     <field name="productid" />
@@ -13,11 +13,11 @@
                 </tree>
             </field>
         </record>
-        <record model="ir.ui.view" id="trufflesapp.form_view_lines">
+        <record model="ir.ui.view" id="trufflesapp.form_view_orderlines">
             <field name="name">Lines</field>
-            <field name="model">trufflesapp.lines</field>
+            <field name="model">trufflesapp.orderlines</field>
             <field name="arch" type="xml">
-                <form string="Invoice Lines">
+                <form string="Order Lines">
                     <group name="father_group">
                         <group name="left_group">
                             <field name="productid" />
@@ -26,10 +26,10 @@
                             <field name="weight" readonly="1" />
                         </group>
                         <group name="right_group">
-                            <field name="priceProduct" readonly="0" />
+                            <field name="priceProduct" readonly="1" />
                             <field name="weightProduct" readonly="1" />
                             <field name="mesure" readonly="1"/>
-                            <field name="invoiceid" readonly="1"/>
+                            <field name="orderid" readonly="1"/>
                         </group>
                     </group>
                 </form>

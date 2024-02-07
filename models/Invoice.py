@@ -8,13 +8,14 @@ class Invoice(models.Model):
     references=fields.Integer(string="References", required=True, default=lambda self: self.setReferences()) #ID Autoincrementable
     description=fields.Html(string="Description", help="Description of the Invoice")
     dateInvoice=fields.Datetime(string="Date",help="The date of the invoice", required=True, default=fields.Datetime.now)
-    base=fields.Float(string="Base", help="The total price of the invoice without IVA", compute="setPriceBase", required=True)
+    base=fields.Float(string="Base", help="The total price of the invoice without IVA", compute="setPriceBase", store=True)
     iva=fields.Selection(string="IVA", selection=[('zero','0%'), ('ten','10%'), ('twenty-one','21%')], default="zero")
-    totalIva=fields.Float(string="TotalIVA", help="The total price of the invoice with IVA", compute="computeTotalIVA")
+    totalIva=fields.Float(string="TotalIVA", help="The total price of the invoice with IVA", compute="computeTotalIVA",store=True)
     state=fields.Selection(string="State", selection=[('D', 'Draft'), ('C', 'Confirmed')], default="D")
     lines=fields.One2many("trufflesapp.lines", "invoiceid") #linea (nuevo modelo)
-    customer=fields.Char(string="Customer") #Relacion a modelo customers
-    
+    customer=fields.Many2one("res.partner", string="Customer", required=True) #Relacion a modelo customers
+    active=fields.Boolean(string="Is active",default=True)
+
     def init(self):
         self.setPriceBase()
 
@@ -45,3 +46,8 @@ class Invoice(models.Model):
 
     def confirmInvoice(self):
         self.state = 'C'
+
+    def desactivateInvoices(self):
+        invoices = self.search([('state','in','(C, I)')])
+        for invoice in invoices:
+            invoice.active = False

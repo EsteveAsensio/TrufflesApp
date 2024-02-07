@@ -4,8 +4,9 @@
             <field name="name">Invoice</field>
             <field name="model">trufflesapp.invoice</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree decoration-success="state == 'C'" decoration-danger="state == 'D'">
                     <field name="references" />
+                    <field name="customer" />
                     <field name="dateInvoice" />
                     <field name="iva" />
                     <field name="totalIva" />
@@ -13,32 +14,58 @@
                 </tree>
             </field>
         </record>
+
         <record model="ir.ui.view" id="trufflesapp.form_view_invoice">
             <field name="name">Info Invoice</field>
             <field name="model">trufflesapp.invoice</field>
             <field name="arch" type="xml">
-                <form string="Info Product">
+                <form string="Info Invoice">
                     <header>
-                        <button string="Confirm" type="object" name="confirmInvoice"/>
+                        <button string="Confirm" type="object" name="confirmInvoice"
+                            confirm="¿Are you shure to Confirm a Invoice?"
+                            attrs="{'invisible': [('state', '!=', 'D')]}" />
+                        <button string="Desactivate" type="object" class="oe_highlight"
+                            name="desactivateInvoices"
+                            confirm="¿Are you sure you want to deactivate all confirmed invoices?" />
+
                         <field name="state" widget="statusbar" />
                     </header>
                     <sheet>
                         <group name="father_group">
                             <group name="left_group">
-                                <field name="references" attrs="{'readonly': [('state', '=', 'C')]}"/>
-                                <field name="dateInvoice" attrs="{'readonly': [('state', '=', 'C')]}"/>
-                                <field name="base" readonly="1"/>
-                                <field name="iva" attrs="{'readonly': [('state', '=', 'C')]}"/>
+                                <field name="references" attrs="{'readonly': [('state', '=', 'C')]}" />
+                                <field name="dateInvoice"
+                                    attrs="{'readonly': [('state', '=', 'C')]}" />
+                                <field name="base" readonly="1" />
+                                <field name="iva" attrs="{'readonly': [('state', '=', 'C')]}" />
                                 <field name="totalIva" readonly="1" />
                             </group>
                             <group name="right_group">
-                                <field name="customer" attrs="{'readonly': [('state', '=', 'C')]}"/>
-                                <field name="description" attrs="{'readonly': [('state', '=', 'C')]}"/>
+                                <field name="customer" attrs="{'readonly': [('state', '=', 'C')]}" />
+                                <field name="description"
+                                    attrs="{'readonly': [('state', '=', 'C')]}" />
                             </group>
                         </group>
                         <notebook>
                             <page string="Invoice Lines">
-                                <field name="lines" attrs="{'readonly': [('state', '=', 'C')]}"/>
+                                <field name="lines" attrs="{'readonly': [('state', '=', 'C')]}">
+                                    <form>
+                                        <group name="father_group">
+                                            <group name="left_group">
+                                                <field name="productid" />
+                                                <field name="units" />
+                                                <field name="totalprice" />
+                                                <field name="weight" readonly="1" />
+                                            </group>
+                                            <group name="right_group">
+                                                <field name="priceProduct" readonly="1" />
+                                                <field name="weightProduct" readonly="1" />
+                                                <field name="mesure" readonly="1" />
+                                                <field name="invoiceid" readonly="1" />
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>
@@ -47,10 +74,66 @@
         </record>
     </data>
 
+    <!-- Calendar -->
+    <record model="ir.ui.view" id="trufflesapp.calendar_invoice">
+        <field name="name">Calendar Invoice</field>
+        <field name="model">trufflesapp.invoice</field>
+        <field name="arch" type="xml">
+            <calendar date_start="dateInvoice" color="customer" event_open_popup="True" mode="month"
+                form_view_id="trufflesapp.form_view_invoice" quick_add="False">
+                <field name="references" />
+                <field name="customer" />
+                <field name="dateInvoice" />
+                <field name="totalIva" />
+                <field name="state" />
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Pivot -->
+    <record model="ir.ui.view" id="trufflesapp.pivot_invoice">
+        <field name="name">Invoice pivot</field>
+        <field name="model">trufflesapp.invoice</field>
+        <field name="arch" type="xml">
+            <pivot string="Pivot invoice">
+                <field name="customer" type="row" />
+                <field name="base" type="measure" widget="monetary" />
+                <field name="dateInvoice" interval="month" />
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Gráfico -->
+    <record model="ir.ui.view" id="trufflesapp.graph_invoice">
+        <field name="name">Invoice graph</field>
+        <field name="model">trufflesapp.invoice</field>
+        <field name="arch" type="xml">
+            <graph string="Invoice Graph" type="pie">
+                <field name="customer" type="row" />
+                <field name="dateInvoice" interval="month" />
+                <field name="base" type="measure" widget="monetary" />
+            </graph>
+        </field>
+    </record>
+
+    <!-- Filter-->
+    <record model="ir.ui.view" id="trufflesapp.filter">
+        <field name="name">Invoice filter</field>
+        <field name="model">trufflesapp.invoice</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Draft Invoices" name="draft" domain="[('state','=','D')]" />
+                <filter string="Confirmed Invoices" name="confirmed" domain="[('state','=','C')]" />
+                <filter string="Deactivated Invoices" name="deactivated"
+                    domain="[('active','=',False)]" />
+            </search>
+        </field>
+    </record>
+
     <!-- actions opening views on models -->
     <record model="ir.actions.act_window" id="trufflesapp.invoice_action_window">
         <field name="name">Invoice</field>
         <field name="res_model">trufflesapp.invoice</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,calendar,graph,pivot,form</field>
     </record>
 </odoo>

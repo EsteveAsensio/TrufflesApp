@@ -24,6 +24,7 @@
                             <field name="price" />
                             <field name="stock" />
                             <field name="category" />
+                            <field name="fullPath" />
                         </group>
                         <group name="right_group">
                             <h1 style="color:#d2d2ff" colspan="2">Photo</h1>
@@ -36,6 +37,7 @@
                         </page>
                         <page string="Weights">
                             <field name="weight" style="background:#d2d2ff;" />
+                            <field name="mesure" />
                         </page>
                     </notebook>
                 </form>
@@ -43,10 +45,49 @@
         </record>
     </data>
 
+    <!-- Kanban -->
+    <record model="ir.ui.view" id="trufflesapp.kanban_product">
+        <field name="name">Product list</field>
+        <field name="model">trufflesapp.product</field>
+        <field name="arch" type="xml">
+            <kanban class="o_res_partner_kanban">
+                <field name="name" />
+                <field name="category" />
+                <field name="stock" />
+                <field name="weight" />
+                <field name="price" />
+                <field name="photo" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <field name="photo" nolabel="1" widget="image"
+                                    class="oe_right oe_avatar" />
+                            </div>
+                            <h3 class="oe_kanban_details">
+                                <field name="name" class="oe_inline" />
+                            </h3>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <field name="weight" class="oe_inline" />
+                                    <field name="mesure" class="oe_inline" />
+                                </strong>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong>
+                                    <field name="price" class="oe_inline" />
+                                </strong>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
     <!-- actions opening views on models -->
     <record model="ir.actions.act_window" id="trufflesapp.product_action_window">
         <field name="name">Product</field>
         <field name="res_model">trufflesapp.product</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">kanban,tree,form</field>
     </record>
 </odoo>

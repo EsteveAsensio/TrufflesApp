@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <!-- Top menu item -->
-        <menuitem name="Truffle" id="trufflesapp.menu_root"/>
+        <menuitem name="Truffle" id="trufflesapp.menu_root" web_icon="trufflesapp,static/description/icon.png"/>
         
         <!-- menu categories-->
         <menuitem name="Categories" id="trufflesapp.menu_category" parent="trufflesapp.menu_root" />
@@ -32,5 +32,11 @@
         <!-- actions -->
         <menuitem name="Invoice" id="trufflesapp.menu_invoice_list"
             parent="trufflesapp.menu_root" action="trufflesapp.invoice_action_window" />
+
+        <!-- menu categories-->
+        <menuitem name="Order" id="trufflesapp.menu_order" parent="trufflesapp.menu_root" />
+        <!-- actions -->
+        <menuitem name="Order" id="trufflesapp.menu_order_list"
+            parent="trufflesapp.menu_root" action="trufflesapp.order_action_window" />
     </data>
 </odoo>

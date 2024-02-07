@@ -7,7 +7,7 @@
                 <tree>
                     <field name="name" />
                     <field name="description" />
-                    <field name="products" />
+                    <field name="products" widget="many2many_tags" />
                 </tree>
             </field>
         </record>
@@ -24,12 +24,12 @@
                             <field name="father" />
                         </group>
                         <group name="right_group">
-                            <field name="children" />
+                            <field name="children"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Products">
-                            <field name="products" />
+                            <field name="products"/>
                         </page>
                     </notebook>
                 </form>

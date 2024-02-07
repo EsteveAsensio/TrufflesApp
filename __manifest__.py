@@ -27,8 +27,12 @@
         'views/quality.xml',
         'views/product.xml',
         'views/invoice.xml',
+        'views/orders.xml',
         'views/invoicelines.xml',
+        'views/orderlines.xml',
         'views/category.xml',
+        'views/invoicereport.xml',
+        'views/invoicetemplate.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode
