@@ -7,36 +7,42 @@
         <menuitem name="Categories" id="trufflesapp.menu_category" parent="trufflesapp.menu_root" />
         <!-- actions -->
         <menuitem name="Categories" id="trufflesapp.menu_category_list"
-            parent="trufflesapp.menu_root" action="trufflesapp.category_action_window" />
+            parent="trufflesapp.menu_root" action="trufflesapp.category_action_window" 
+            groups="group_admins,group_workers"/>
 
         <!-- menu categories-->
         <menuitem name="Prodcuts" id="trufflesapp.menu_product" parent="trufflesapp.menu_root" />
         <!-- actions -->
         <menuitem name="Products" id="trufflesapp.menu_product_list"
-            parent="trufflesapp.menu_root" action="trufflesapp.product_action_window" />
+            parent="trufflesapp.menu_root" action="trufflesapp.product_action_window" 
+            groups="group_admins,group_workers"/>
 
         <!-- menu categories-->
         <menuitem name="Qualities" id="trufflesapp.menu_quality" parent="trufflesapp.menu_root" />
         <!-- actions -->
         <menuitem name="Qualities" id="trufflesapp.menu_quality_list"
-            parent="trufflesapp.menu_root" action="trufflesapp.quality_action_window" />
+            parent="trufflesapp.menu_root" action="trufflesapp.quality_action_window" 
+            groups="group_admins,group_workers"/>
 
         <!-- menu categories-->
         <menuitem name="Weight" id="trufflesapp.menu_weight" parent="trufflesapp.menu_root" />
         <!-- actions -->
         <menuitem name="Weight" id="trufflesapp.menu_weight_list"
-            parent="trufflesapp.menu_root" action="trufflesapp.weight_action_window" />
+            parent="trufflesapp.menu_root" action="trufflesapp.weight_action_window" 
+            groups="group_admins,group_workers"/>
 
         <!-- menu categories-->
         <menuitem name="Invoice" id="trufflesapp.menu_invoice" parent="trufflesapp.menu_root" />
         <!-- actions -->
         <menuitem name="Invoice" id="trufflesapp.menu_invoice_list"
-            parent="trufflesapp.menu_root" action="trufflesapp.invoice_action_window" />
+            parent="trufflesapp.menu_root" action="trufflesapp.invoice_action_window" 
+            groups="group_admins,group_workers"/>
 
         <!-- menu categories-->
         <menuitem name="Order" id="trufflesapp.menu_order" parent="trufflesapp.menu_root" />
         <!-- actions -->
         <menuitem name="Order" id="trufflesapp.menu_order_list"
-            parent="trufflesapp.menu_root" action="trufflesapp.order_action_window" />
+            parent="trufflesapp.menu_root" action="trufflesapp.order_action_window" 
+            groups="group_admins,group_workers,group_clients"/>
     </data>
 </odoo>

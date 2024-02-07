@@ -1,9 +1,36 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_trufflesapp_product, trufflesapp.product,model_trufflesapp_product,base.group_user,1,1,1,1
-access_trufflesapp_quality, trufflesapp.quality,model_trufflesapp_quality,base.group_user,1,1,1,1
-access_trufflesapp_weight, trufflesapp.weight,model_trufflesapp_weight,base.group_user,1,1,1,1
-access_trufflesapp_category, trufflesapp.category,model_trufflesapp_category,base.group_user,1,1,1,1
-access_trufflesapp_invoice, trufflesapp.invoice,model_trufflesapp_invoice,base.group_user,1,1,1,1
-access_trufflesapp_lines, trufflesapp.lines,model_trufflesapp_lines,base.group_user,1,1,1,1
-access_trufflesapp_order, trufflesapp.order,model_trufflesapp_order,base.group_user,1,1,1,1
-access_trufflesapp_orderlines, trufflesapp.orderlines,model_trufflesapp_orderlines,base.group_user,1,1,1,1
+
+access_trufflesapp_category,trufflesapp.category,model_trufflesapp_category,base.group_user,1,1,1,1
+access_trufflesapp_category,trufflesapp.category,model_trufflesapp_category,group_admins,1,1,1,1
+access_trufflesapp_category,trufflesapp.category,model_trufflesapp_category,group_workers,1,1,0,0
+
+access_trufflesapp_product,trufflesapp.product,model_trufflesapp_product,base.group_user,1,1,1,1
+access_trufflesapp_product,trufflesapp.product,model_trufflesapp_product,group_admins,1,1,1,1
+access_trufflesapp_product,trufflesapp.product,model_trufflesapp_product,group_workers,1,1,0,0
+
+access_trufflesapp_quality,trufflesapp.quality,model_trufflesapp_quality,base.group_user,1,1,1,1
+access_trufflesapp_quality,trufflesapp.quality,model_trufflesapp_quality,group_admins,1,1,1,1
+access_trufflesapp_quality,trufflesapp.quality,model_trufflesapp_quality,group_workers,1,1,0,0
+
+access_trufflesapp_weight,trufflesapp.weight,model_trufflesapp_weight,base.group_user,1,1,1,1
+access_trufflesapp_weight,trufflesapp.weight,model_trufflesapp_weight,group_admins,1,1,1,1
+access_trufflesapp_weight,trufflesapp.weight,model_trufflesapp_weight,group_workers,1,1,0,0
+
+access_trufflesapp_invoice,trufflesapp.invoice,model_trufflesapp_invoice,base.group_user,1,1,1,1
+access_trufflesapp_invoice,trufflesapp.invoice,model_trufflesapp_invoice,group_admins,1,1,1,1
+access_trufflesapp_invoice,trufflesapp.invoice,model_trufflesapp_invoice,group_workers,1,1,0,0
+
+access_trufflesapp_lines,trufflesapp.lines,model_trufflesapp_lines,base.group_user,1,1,1,1
+access_trufflesapp_lines,trufflesapp.lines,model_trufflesapp_lines,group_admins,1,1,1,1
+access_trufflesapp_lines,trufflesapp.lines,model_trufflesapp_lines,group_workers,1,1,0,0
+
+access_trufflesapp_order,trufflesapp.order,model_trufflesapp_order,base.group_user,1,1,1,1
+access_trufflesapp_order,trufflesapp.order,model_trufflesapp_order,group_admins,1,1,1,1
+access_trufflesapp_order,trufflesapp.order,model_trufflesapp_order,group_workers,1,1,0,0
+access_trufflesapp_order,trufflesapp.order,model_trufflesapp_order,group_clients,1,0,0,0
+
+access_trufflesapp_orderlines,trufflesapp.orderlines,model_trufflesapp_orderlines,base.group_user,1,1,1,1
+access_trufflesapp_orderlines,trufflesapp.orderlines,model_trufflesapp_orderlines,group_admins,1,1,1,1
+access_trufflesapp_orderlines,trufflesapp.orderlines,model_trufflesapp_orderlines,group_workers,1,1,0,0
+access_trufflesapp_orderlines,trufflesapp.orderlines,model_trufflesapp_orderlines,group_clients,1,1,0,0
+
