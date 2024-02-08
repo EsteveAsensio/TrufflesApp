@@ -24,9 +24,10 @@
                         <button string="Confirm" type="object" name="confirmOrder"
                             confirm="¿Are you shure to Confirm a Order?"
                             attrs="{'invisible': [('state', '!=', 'D')]}" />
-                        <button string="Desactivate" type="object" name="desactivateOrders"
+                        <button string="Move History" type="object" name="desactivateOrders"
                             class="oe_highlight"
-                            confirm="¿Are you sure you want to deactivate all confirmed orders?" />
+                            groups="trufflesapp.group_admins"
+                            confirm="¿Are you sure you want to move to the history all confirmed or invoiced orders?" />
 
                         <button string="Invoiced" type="object" name="invoiceOrder"
                             confirm="¿Are you shure to Invoice a Order?"

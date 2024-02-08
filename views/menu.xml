@@ -8,14 +8,14 @@
         <!-- actions -->
         <menuitem name="Categories" id="trufflesapp.menu_category_list"
             parent="trufflesapp.menu_root" action="trufflesapp.category_action_window" 
-            groups="group_admins,group_workers"/>
+            groups="group_admins,group_workers,group_clients"/>
 
         <!-- menu categories-->
         <menuitem name="Prodcuts" id="trufflesapp.menu_product" parent="trufflesapp.menu_root" />
         <!-- actions -->
         <menuitem name="Products" id="trufflesapp.menu_product_list"
             parent="trufflesapp.menu_root" action="trufflesapp.product_action_window" 
-            groups="group_admins,group_workers"/>
+            groups="group_admins,group_workers,group_clients"/>
 
         <!-- menu categories-->
         <menuitem name="Qualities" id="trufflesapp.menu_quality" parent="trufflesapp.menu_root" />

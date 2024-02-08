@@ -60,7 +60,7 @@ class Order(models.Model):
                 record.totalIva = record.base
 
     def confirmOrder(self):
-        self.checkStock()
+        self.sudo().checkStock()
         self.state = 'C'
 
     def invoiceOrder(self):
@@ -71,7 +71,7 @@ class Order(models.Model):
         infoInvoice = {
             "customer": self.vendor.id,
         }
-        invoice = self.env["trufflesapp.invoice"].create(infoInvoice)
+        invoice = self.env["trufflesapp.invoice"].sudo().create(infoInvoice)
         for linesInvoice in self.lines:
             product = linesInvoice.productid
             units = linesInvoice.units
@@ -80,7 +80,7 @@ class Order(models.Model):
                 "productid": product.id,
                 "units": units
             }
-            self.env["trufflesapp.lines"].create(linea)
+            self.env["trufflesapp.lines"].sudo().create(linea)
         self.invoice = invoice
 
 

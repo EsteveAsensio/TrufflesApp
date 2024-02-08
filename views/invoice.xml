@@ -22,11 +22,13 @@
                 <form string="Info Invoice">
                     <header>
                         <button string="Confirm" type="object" name="confirmInvoice"
+                            groups="trufflesapp.group_admins,trufflesapp.group_workers"
                             confirm="¿Are you shure to Confirm a Invoice?"
                             attrs="{'invisible': [('state', '!=', 'D')]}" />
-                        <button string="Desactivate" type="object" class="oe_highlight"
+                        <button string="Move History" type="object" class="oe_highlight"
                             name="desactivateInvoices"
-                            confirm="¿Are you sure you want to deactivate all confirmed invoices?" />
+                            groups="trufflesapp.group_admins"
+                            confirm="¿Are you sure you want to move to the history all confirmed or invoiced orders?" />
 
                         <field name="state" widget="statusbar" />
                     </header>
