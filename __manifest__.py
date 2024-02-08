@@ -34,6 +34,7 @@
         'views/category.xml',
         'views/invoicereport.xml',
         'views/invoicetemplate.xml',
+        'views/invoicetopdf.xml',
         'views/menu.xml',
     ],
     # only loaded in demonstration mode

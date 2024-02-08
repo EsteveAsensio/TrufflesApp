@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <report
+        id="trufflesapp.invoice_pdf"
+        string="Invoice Report"
+        model="trufflesapp.invoice"
+        report_type="qweb-pdf"
+        name="trufflesapp.template_invoice_pdf"
+    />
+
+    <template id="trufflesapp.template_invoice_pdf">
+        <t t-call="web.basic_layout">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <style>
+                            .product-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-top: 20px;
+                            }
+
+                            .product-table th, .product-table td {
+                                border: 1px solid #ffa07a; /* Cambiar el color del borde */
+                                padding: 8px;
+                                text-align: left;
+                            }
+
+                            .product-table th {
+                                background-color: #ff7f50; /* Cambiar el color de fondo del encabezado */
+                                color: white; /* Cambiar el color del texto del encabezado */
+                            }
+
+                            .product-table td {
+                                background-color: #ffe4e1; /* Cambiar el color de fondo de las celdas */
+                            }
+                        </style>
+                        <div>
+                            <h1>Invoice Information</h1>
+                        </div>
+                        <div class="invoice-info">
+                            <p><strong>State:</strong> <t t-esc="o.state"/></p>
+                            <p><strong>Reference:</strong> <t t-esc="o.references"/></p>
+                            <p><strong>Description:</strong> <t t-esc="o.description"/></p>
+                            <p><strong>Date Invoice:</strong> <t t-esc="o.dateInvoice"/></p>
+                            <p><strong>Customer:</strong> <t t-esc="o.customer.name"/></p>
+                        </div>
+                        <div>
+                            <h1>Payment Information</h1>
+                        </div>
+                        <div>
+                            <p><strong>Base:</strong> <t t-esc="o.base"/></p>
+                            <p><strong>IVA:</strong> <t t-esc="o.iva"/></p>
+                            <p><strong>Total with IVA:</strong> <t t-esc="o.totalIva"/></p>
+                        </div>
+                        <div>
+                            <h2>Products Details</h2>
+                        </div>
+                        <table class="product-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Units</th>
+                                    <th>Total Weight</th>
+                                    <th>Measure</th>
+                                    <th>Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.lines" t-as="line">
+                                    <tr>
+                                        <td><t t-esc="line.productid.name"/></td>
+                                        <td><t t-esc="line.units"/></td>
+                                        <td><t t-esc="line.weight"/></td>
+                                        <td><t t-esc="line.mesure"/></td>
+                                        <td><t t-esc="line.totalprice"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
