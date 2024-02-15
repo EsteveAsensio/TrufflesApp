@@ -39,8 +39,7 @@
                             <h1>Invoice Information</h1>
                         </div>
                         <div class="invoice-info">
-                            <p><strong>State:</strong> <t t-esc="o.state"/></p>
-                            <p><strong>Reference:</strong> <t t-esc="o.references"/></p>
+                            <p><strong>Reference:</strong> <t t-esc="o.name"/></p>
                             <p><strong>Description:</strong> <t t-esc="o.description"/></p>
                             <p><strong>Date Invoice:</strong> <t t-esc="o.dateInvoice"/></p>
                             <p><strong>Customer:</strong> <t t-esc="o.customer.name"/></p>
@@ -50,7 +49,7 @@
                         </div>
                         <div>
                             <p><strong>Base:</strong> <t t-esc="o.base"/></p>
-                            <p><strong>IVA:</strong> <t t-esc="o.iva"/></p>
+                            <p><strong>IVA:</strong> <t t-esc="o.iva"/>%</p>
                             <p><strong>Total with IVA:</strong> <t t-esc="o.totalIva"/></p>
                         </div>
                         <div>

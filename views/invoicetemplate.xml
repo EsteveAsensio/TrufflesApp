@@ -1,9 +1,0 @@
-<odoo>
-    <template id="invoice_report">
-        <span call="web.html_container" >
-            <div class="page">
-                <h1>Invoice Report</h1>
-            </div>
-        </span>
-    </template>
-</odoo>

@@ -83,32 +83,6 @@
         </record>
     </data>
 
-    <!-- Pivot -->
-    <record model="ir.ui.view" id="trufflesapp.pivot_order">
-        <field name="name">Order pivot</field>
-        <field name="model">trufflesapp.order</field>
-        <field name="arch" type="xml">
-            <pivot string="Pivot order">
-                <field name="vendor" type="row" />
-                <field name="base" type="measure" widget="monetary" />
-                <field name="dateOrder" interval="month" />
-            </pivot>
-        </field>
-    </record>
-
-    <!-- Gráfico -->
-    <record model="ir.ui.view" id="trufflesapp.graph_order">
-        <field name="name">Order graph</field>
-        <field name="model">trufflesapp.order</field>
-        <field name="arch" type="xml">
-            <graph string="Order Graph" type="pie">
-                <field name="vendor" type="row" />
-                <field name="dateOrder" interval="month" />
-                <field name="base" type="measure" widget="monetary" />
-            </graph>
-        </field>
-    </record>
-
     <!-- Filter-->
     <record model="ir.ui.view" id="trufflesapp.filter_order">
         <field name="name">Order filter</field>
@@ -118,16 +92,15 @@
                 <filter string="Draft Orders" name="draft" domain="[('state','=','D')]" />
                 <filter string="Confirmed Orders" name="confirmed" domain="[('state','=','C')]" />
                 <filter string="Invoiced Orders" name="invoiced" domain="[('state','=','I')]" />
-                <filter string="History of Orders" name="history"
-                    domain="[('active','=',False)]" />
             </search>
         </field>
     </record>
 
     <!-- actions opening views on models -->
-    <record model="ir.actions.act_window" id="trufflesapp.order_action_window">
+    <record model="ir.actions.act_window" id="trufflesapp.ordersClient_action_window">
         <field name="name">Order</field>
         <field name="res_model">trufflesapp.order</field>
-        <field name="view_mode">tree,graph,pivot,form</field>
+        <field name="domain">[('partner_id.user_id','=','vendor')]</field>
+        <field name="view_mode">tree,form</field>
     </record>
 </odoo>

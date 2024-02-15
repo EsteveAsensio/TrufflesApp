@@ -5,7 +5,7 @@
             <field name="model">trufflesapp.invoice</field>
             <field name="arch" type="xml">
                 <tree decoration-success="state == 'C'" decoration-danger="state == 'D'">
-                    <field name="references" />
+                    <field name="name" />
                     <field name="customer" />
                     <field name="dateInvoice" />
                     <field name="iva" />
@@ -25,17 +25,18 @@
                             groups="trufflesapp.group_admins,trufflesapp.group_workers"
                             confirm="¿Are you shure to Confirm a Invoice?"
                             attrs="{'invisible': [('state', '!=', 'D')]}" />
-                        <button string="Move History" type="object" class="oe_highlight"
+                        <button string="Move to History" type="object" class="oe_highlight"
                             name="desactivateInvoices"
                             groups="trufflesapp.group_admins"
-                            confirm="¿Are you sure you want to move to the history all confirmed or invoiced orders?" />
+                            attrs="{'invisible': [('state', '=', 'D')]}"
+                            confirm="¿Are you sure you want to move to the history all confirmed invoices?" />
 
                         <field name="state" widget="statusbar" />
                     </header>
                     <sheet>
                         <group name="father_group">
                             <group name="left_group">
-                                <field name="references" attrs="{'readonly': [('state', '=', 'C')]}" />
+                                <field name="name" readonly="1" />
                                 <field name="dateInvoice"
                                     attrs="{'readonly': [('state', '=', 'C')]}" />
                                 <field name="base" readonly="1" />
@@ -83,7 +84,7 @@
         <field name="arch" type="xml">
             <calendar date_start="dateInvoice" color="customer" event_open_popup="True" mode="month"
                 form_view_id="trufflesapp.form_view_invoice" quick_add="False">
-                <field name="references" />
+                <field name="name" />
                 <field name="customer" />
                 <field name="dateInvoice" />
                 <field name="totalIva" />
@@ -126,7 +127,7 @@
             <search>
                 <filter string="Draft Invoices" name="draft" domain="[('state','=','D')]" />
                 <filter string="Confirmed Invoices" name="confirmed" domain="[('state','=','C')]" />
-                <filter string="Deactivated Invoices" name="deactivated"
+                <filter string="History of Invoices" name="history"
                     domain="[('active','=',False)]" />
             </search>
         </field>
