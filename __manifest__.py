@@ -29,7 +29,6 @@
         'views/product.xml',
         'views/invoice.xml',
         'views/orders.xml',
-        'views/ordersClient.xml',
         'views/invoicelines.xml',
         'views/orderlines.xml',
         'views/category.xml',
