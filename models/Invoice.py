@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 
-
 class Invoice(models.Model):
     _name = 'trufflesapp.invoice'
     _description = 'The invoice about the products'

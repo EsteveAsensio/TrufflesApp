@@ -5,14 +5,14 @@ class Order(models.Model):
     _name = 'trufflesapp.order'
     _description = 'The order of a Client'
 
-    name=fields.Integer(string="References", required=True, default=lambda self: self.setReferences()) #ID Autoincrementable
+    name=fields.Integer(string="References", default=lambda self: self.setReferences()) #ID Autoincrementable
     dateOrder=fields.Datetime(string="Date",help="The date of the order", required=True, default=fields.Datetime.now)
     base=fields.Float(string="Base", help="The total price of the orders without IVA", compute="setPriceBase", store=True)
     iva=fields.Selection(string="IVA", selection=[('zero','0%'), ('ten','10%'), ('twenty-one','21%')], default="zero")
     totalIva=fields.Float(string="TotalIVA", help="The total price of the order with IVA", compute="computeTotalIVA",store=True)
     state=fields.Selection(string="State", selection=[('D', 'Draft'), ('C', 'Confirmed'), ('I', 'Invoiced')], default="D")
     lines=fields.One2many("trufflesapp.orderlines", "orderid")
-    vendor=fields.Many2one("res.partner", string="Vendor", required=True, default=lambda self: self.env.user.partner_id)#Relacion a modelo customers
+    vendor=fields.Many2one("res.partner", string="Vendor", default=lambda self: self.env.user.partner_id)#Relacion a modelo customers
     active=fields.Boolean(string="Is active",default=True)
     invoice=fields.Many2one("trufflesapp.invoice", string="Invoice")
 

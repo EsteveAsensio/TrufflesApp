@@ -10,13 +10,3 @@ class Category(models.Model):
     father=fields.Many2one("trufflesapp.category", string="CategoryFather")
     children=fields.One2many("trufflesapp.category", "father")
     products=fields.One2many("trufflesapp.product", "category")
-
-''' 
-            if record.father != None:
-                if record.father.path == False:
-                    record.path = f"TrufflesApp:/{record.name}"
-                else:
-                    record.path = f"{record.father.path}/{record.name}"
-            else:
-                record.path = f"TrufflesApp:/{record.name}"
-                '''

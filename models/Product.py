@@ -13,7 +13,6 @@ class Product(models.Model):
     price=fields.Float(string="Price", help="Price of the product", required=True)
     stock=fields.Float(string="Stock", help="Stock of the product", required=True)
     photo = fields.Binary(string="Photo", help="A photo of the product", store=True)
-    lines=fields.One2many("trufflesapp.lines", "productid") #Modeo lineas
     fullPath=fields.Char(string="Full Path", help="The full path of the product", compute="getFullPath")
     #invoice=fields.Many2one("trufflesapp.invoice", string="Invoice")
 
