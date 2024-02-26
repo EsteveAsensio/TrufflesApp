@@ -10,7 +10,7 @@ class Invoice(models.Model):
     base=fields.Float(string="Base", help="The total price of the invoice without IVA", compute="setPriceBase", store=True)
     iva=fields.Selection(string="IVA", selection=[('0','0%'), ('10','10%'), ('21','21%')], default="0")
     totalIva=fields.Float(string="TotalIVA", help="The total price of the invoice with IVA", compute="computeTotalIVA",store=True)
-    state=fields.Selection(string="State", selection=[('D', 'Draft'), ('C', 'Confirmed')], default="D")
+    state=fields.Selection(string="State", selection=[('Draft', 'Draft'), ('Confirmed', 'Confirmed')], default="Draft")
     lines=fields.One2many("trufflesapp.lines", "invoiceid") #linea (nuevo modelo)
     customer=fields.Many2one("res.partner", string="Customer", required=True) #Relacion a modelo customers
     active=fields.Boolean(string="Is active",default=True)
@@ -44,9 +44,9 @@ class Invoice(models.Model):
                 record.totalIva = record.base
 
     def confirmInvoice(self):
-        self.state = 'C'
+        self.state = 'Confirmed'
 
     def desactivateInvoices(self):
-        invoices = self.search([('state','=','C')])
+        invoices = self.search([('state','=','Confirmed')])
         for invoice in invoices:
             invoice.active = False

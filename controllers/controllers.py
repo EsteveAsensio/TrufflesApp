@@ -68,7 +68,7 @@ class Trufflesapp(http.Controller):
                 domain=[("id","=",orderid)]
             else:
                 domain=[]                                                                                                                            
-            orderInfo = http.request.env["trufflesapp.order"].sudo().search_read(domain,["name", "base", "iva", "totalIva", "state", "vendor", "lines", "active", "invoice"])
+            orderInfo = http.request.env["trufflesapp.order"].sudo().search_read(domain,["name", "base", "iva", "totalIva", "state", "vendor", "lines", "invoice"])
             if not orderInfo:
                 data = json.dumps({'status': 400, 'message': 'Order not found'})
                 return Response(data, content_type='application/json', status=400)
@@ -86,9 +86,33 @@ class Trufflesapp(http.Controller):
     def addOrder(self, **kw):
         response = request.httprequest.json
         try:
-            if not response.get('vendor'):
+            vendorid = response.get('vendor')
+            if not vendorid:
                 return {"status": 400, "error": "Vendor is required."}
+                
+            base = response.get('base')
+            if base:
+                return {"status": 400, "error": "You cant change the price"}
             
+            totalIva = response.get('totalIva')
+            if totalIva:
+                return {"status": 400, "error": "You cant change the price"}
+            
+            active = response.get('active')
+            if active:
+                return {"status": 400, "error": "You dont have permissions to modify the active"}
+            
+            invoice = response.get('invoice')
+            if invoice:
+                return {"status": 400, "error": "You dont have permissions to modify the invoice"}
+            
+            partner = request.env['res.partner'].sudo().browse(vendorid)
+            if not partner.exists():
+                return {"status": 404, "error": "Vendor not found."}
+
+            if response.get('state') == 'Confirmed':
+                result.confirmOrder()
+
             result = http.request.env["trufflesapp.order"].sudo().create(response)
             data={
                 "status":201,
@@ -108,7 +132,7 @@ class Trufflesapp(http.Controller):
     def deleteOrder(self, orderid):
         order = request.env['trufflesapp.order'].sudo().browse(orderid)
         try:
-            if not order:
+            if not order.exists():
                 data = json.dumps({'status': 400, 'message': 'Order not found'})
                 return Response(data, content_type='application/json', status=400)
 
@@ -127,9 +151,26 @@ class Trufflesapp(http.Controller):
        response = request.httprequest.json
        try:
             result = http.request.env["trufflesapp.order"].sudo().search([("id","=",response["id"])])
+            if not result.exists():
+                data={
+                "status":400,
+                "id":result.id
+                }   
+                return data
+            
+            if response.get('state') not in ['Draft', 'Confirmed']:
+                data={
+                    "status":400,
+                    "error":"Invalid state value. State must be Draft or Confirmed"
+                    }   
+                return data
+            
+            if response.get('state') == 'Confirmed':
+                result.confirmOrder()
+
             result.sudo().write(response)
             data={
-                "status":201,
+                "status":200,
                 "id":result.id
             }
             return data
@@ -139,7 +180,7 @@ class Trufflesapp(http.Controller):
                 "error":error
             }
             return data
-        
+       
     #   
     #OrderLine
     #
@@ -151,42 +192,20 @@ class Trufflesapp(http.Controller):
             domain=[("id","=",orderlineid)]
         else:
             domain=[]
-        orderLineInfo = http.request.env["trufflesapp.orderlines"].sudo().search_read(domain,["units", "mesure", "weight", "totalprice"])
+        orderLineInfo = http.request.env["trufflesapp.orderlines"].sudo().search_read(domain,["productid", "units", "mesure", "weight", "totalprice", "orderid"])
         if not orderLineInfo:
             data = json.dumps({'status': 400, 'message': 'Order Line not found'})
             return Response(data, content_type='application/json', status=400)
         result = {"status": 200, "result":orderLineInfo}
         return http.Response(json.dumps(result).encode("utf8"),mimetype="application/json")
-        
-    #añadir
-    @http.route('/trufflesapp/addOrderLine', type='json', auth='public', methods=['POST'], csrf=False)
-    def addOrderLine(self, **kw):
-        try:
-            response = request.httprequest.json
-            
-            if not response.get('productid'):
-                    return {"status": 400, "error": "Order Line neds a productid."}
-
-            result = http.request.env["trufflesapp.orderlines"].sudo().create(response)
-            data = {
-                "status":201,
-                "id":result.id
-            }
-            return data
-        except Exception as error:
-            data={
-                "status":404,
-                "error":error
-            }
-            return data
-    
+         
     #borrar
     @http.route('/trufflesapp/deleteOrderLine/<int:lineid>', type='http', auth='public', methods=['DELETE'], csrf=False)
     def deleteOrderLine(self, lineid):
 
         line = request.env['trufflesapp.orderlines'].sudo().browse(lineid)
         try:
-            if not line:
+            if not line.exists():
                 data = json.dumps({'status': 400, 'message': 'Order Line not found'})
                 return Response(data, content_type='application/json', status=400)
 
@@ -205,6 +224,27 @@ class Trufflesapp(http.Controller):
        response = request.httprequest.json
        try:
             result = http.request.env["trufflesapp.orderlines"].sudo().search([("id","=",response["id"])])
+            if not result.exists():
+                data={
+                "status":400,
+                "id":result.id
+                }   
+                return data
+            
+            if response.get('weight'):
+                data={
+                "status":400,
+                "error":"Yo cant change the weight"
+                }
+                return data
+            
+            if response.get('totalprice'):
+                data={
+                "status":400,
+                "error":"Yo cant change the total price"
+                }
+                return data
+
             result.sudo().write(response)
             data={
                 "status":201,

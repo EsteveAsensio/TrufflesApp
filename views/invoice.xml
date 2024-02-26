@@ -4,7 +4,7 @@
             <field name="name">Invoice</field>
             <field name="model">trufflesapp.invoice</field>
             <field name="arch" type="xml">
-                <tree decoration-success="state == 'C'" decoration-danger="state == 'D'">
+                <tree decoration-success="state == 'Confirmed'" decoration-danger="state == 'Draft'">
                     <field name="name" />
                     <field name="customer" />
                     <field name="dateInvoice" />
@@ -24,11 +24,11 @@
                         <button string="Confirm" type="object" name="confirmInvoice"
                             groups="trufflesapp.group_admins,trufflesapp.group_workers"
                             confirm="¿Are you shure to Confirm a Invoice?"
-                            attrs="{'invisible': [('state', '!=', 'D')]}" />
+                            attrs="{'invisible': [('state', '!=', 'Draft')]}" />
                         <button string="Move to History" type="object" class="oe_highlight"
                             name="desactivateInvoices"
                             groups="trufflesapp.group_admins"
-                            attrs="{'invisible': [('state', '=', 'D')]}"
+                            attrs="{'invisible': [('state', '=', 'Draft')]}"
                             confirm="¿Are you sure you want to move to the history all confirmed invoices?" />
 
                         <field name="state" widget="statusbar" />
@@ -38,20 +38,23 @@
                             <group name="left_group">
                                 <field name="name" readonly="1" />
                                 <field name="dateInvoice"
-                                    attrs="{'readonly': [('state', '=', 'C')]}" />
+                                    attrs="{'readonly': [('state', '=', 'Confirmed')]}" />
                                 <field name="base" readonly="1" />
-                                <field name="iva" attrs="{'readonly': [('state', '=', 'C')]}" />
+                                <field name="iva"
+                                    attrs="{'readonly': [('state', '=', 'Confirmed')]}" />
                                 <field name="totalIva" readonly="1" />
                             </group>
                             <group name="right_group">
-                                <field name="customer" attrs="{'readonly': [('state', '=', 'C')]}" />
+                                <field name="customer"
+                                    attrs="{'readonly': [('state', '=', 'Confirmed')]}" />
                                 <field name="description"
-                                    attrs="{'readonly': [('state', '=', 'C')]}" />
+                                    attrs="{'readonly': [('state', '=', 'Confirmed')]}" />
                             </group>
                         </group>
                         <notebook>
                             <page string="Invoice Lines">
-                                <field name="lines" attrs="{'readonly': [('state', '=', 'C')]}">
+                                <field name="lines"
+                                    attrs="{'readonly': [('state', '=', 'Confirmed')]}">
                                     <form>
                                         <group name="father_group">
                                             <group name="left_group">
@@ -125,8 +128,9 @@
         <field name="model">trufflesapp.invoice</field>
         <field name="arch" type="xml">
             <search>
-                <filter string="Draft Invoices" name="draft" domain="[('state','=','D')]" />
-                <filter string="Confirmed Invoices" name="confirmed" domain="[('state','=','C')]" />
+                <filter string="Draft Invoices" name="draft" domain="[('state','=','Draft')]" />
+                <filter string="Confirmed Invoices" name="confirmed"
+                    domain="[('state','=','Confirmed')]" />
                 <filter string="History of Invoices" name="history"
                     domain="[('active','=',False)]" />
             </search>
@@ -138,5 +142,13 @@
         <field name="name">Invoice</field>
         <field name="res_model">trufflesapp.invoice</field>
         <field name="view_mode">tree,calendar,graph,pivot,form</field>
+    </record>
+
+    <!-- Action solo para Clientes -->
+    <record model="ir.actions.act_window" id="trufflesapp.invoicesClient_action_window">
+        <field name="name">My Invoices</field>
+        <field name="res_model">trufflesapp.invoice</field>
+        <field name="domain">[('customer.user_ids','=',uid)]</field>
+        <field name="view_mode">tree,form</field>
     </record>
 </odoo>

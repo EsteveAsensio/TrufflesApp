@@ -4,7 +4,7 @@
             <field name="name">Order</field>
             <field name="model">trufflesapp.order</field>
             <field name="arch" type="xml">
-                <tree decoration-success="state == 'C'" decoration-danger="state == 'D'" decoration-primary="state == 'I'">
+                <tree decoration-success="state == 'Confirmed'" decoration-danger="state == 'Draft'" decoration-primary="state == 'Invoiced'">
                     <field name="name" />
                     <field name="vendor" />
                     <field name="dateOrder" />
@@ -23,16 +23,16 @@
                     <header>
                         <button string="Confirm" type="object" name="confirmOrder"
                             confirm="¿Are you shure to Confirm a Order?"
-                            attrs="{'invisible': [('state', '!=', 'D')]}" />
+                            attrs="{'invisible': [('state', '!=', 'Draft')]}" />
                         <button string="Move History" type="object" name="desactivateOrders"
                             class="oe_highlight"
                             groups="trufflesapp.group_admins"
                             confirm="¿Are you sure you want to move to the history all confirmed or invoiced orders?" 
-                            attrs="{'invisible': [('state', '=', 'D')]}"/>
+                            attrs="{'invisible': [('state', '=', 'Draft')]}"/>
 
                         <button string="Invoiced" type="object" name="invoiceOrder"
                             confirm="¿Are you shure to Invoice a Order?"
-                            attrs="{'invisible': [('state', '!=', 'C')]}" />
+                            attrs="{'invisible': [('state', '!=', 'Confirmed')]}" />
                         <field name="state" widget="statusbar" />
                     </header>
                     <sheet>
@@ -41,23 +41,23 @@
                                 <field name="name"
                                 readonly="1" />
                                 <field name="dateOrder"
-                                    attrs="{'readonly': ['|',('state', '=','C'), ('state', '=','I')]}" />
+                                    attrs="{'readonly': ['|',('state', '=','Confirmed'), ('state', '=','Invoiced')]}" />
                                 <field name="base" readonly="1" />
                                 <field name="iva"
-                                    attrs="{'readonly': [('state', 'in', ('C', 'I'))]}" />
+                                    attrs="{'readonly': [('state', 'in', ('Confirmed', 'Invoiced'))]}" />
                                 <field name="totalIva" readonly="1" />
                             </group>
                             <group name="right_group">
                                 <field name="vendor"
-                                    attrs="{'readonly': [('state', 'in', ('C', 'I'))], 'groups': 'group_clients'}"/>
+                                    attrs="{'readonly': [('state', 'in', ('Confirmed', 'Invoiced'))], 'groups': 'group_clients'}"/>
                                 <field name="invoice" readonly="1"
-                                    attrs="{'invisible': [('state', '!=', 'I')]}" />
+                                    attrs="{'invisible': [('state', '!=', 'Invoiced')]}" />
                             </group>
                         </group>
                         <notebook>
                             <page string="Products">
                                 <field name="lines"
-                                    attrs="{'readonly': [('state', 'in', ('C', 'I'))]}">
+                                    attrs="{'readonly': [('state', 'in', ('Confirmed', 'Invoiced'))]}">
                                     <form>
                                         <group name="father_group">
                                             <group name="left_group">
@@ -115,9 +115,9 @@
         <field name="model">trufflesapp.order</field>
         <field name="arch" type="xml">
             <search>
-                <filter string="Draft Orders" name="draft" domain="[('state','=','D')]" />
-                <filter string="Confirmed Orders" name="confirmed" domain="[('state','=','C')]" />
-                <filter string="Invoiced Orders" name="invoiced" domain="[('state','=','I')]" />
+                <filter string="Draft Orders" name="draft" domain="[('state','=','Draft')]" />
+                <filter string="Confirmed Orders" name="confirmed" domain="[('state','=','Confirmed')]" />
+                <filter string="Invoiced Orders" name="invoiced" domain="[('state','=','Invoiced')]" />
                 <filter string="History of Orders" name="history" domain="[('active','=',False)]" />
             </search>
         </field>

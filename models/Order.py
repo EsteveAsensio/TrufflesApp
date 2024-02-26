@@ -10,7 +10,7 @@ class Order(models.Model):
     base=fields.Float(string="Base", help="The total price of the orders without IVA", compute="setPriceBase", store=True)
     iva=fields.Selection(string="IVA", selection=[('zero','0%'), ('ten','10%'), ('twenty-one','21%')], default="zero")
     totalIva=fields.Float(string="TotalIVA", help="The total price of the order with IVA", compute="computeTotalIVA",store=True)
-    state=fields.Selection(string="State", selection=[('D', 'Draft'), ('C', 'Confirmed'), ('I', 'Invoiced')], default="D")
+    state=fields.Selection(string="State", selection=[('Draft', 'Draft'), ('Confirmed', 'Confirmed'), ('Invoiced', 'Invoiced')], default="Draft")
     lines=fields.One2many("trufflesapp.orderlines", "orderid")
     vendor=fields.Many2one("res.partner", string="Vendor", default=lambda self: self.env.user.partner_id)#Relacion a modelo customers
     active=fields.Boolean(string="Is active",default=True)
@@ -37,7 +37,7 @@ class Order(models.Model):
                     product.productid.stock = total
 
     def desactivateOrders(self):
-        orders = self.search([('state', 'in', ['C', 'I'])])
+        orders = self.search([('state', 'in', ['Confirmed', 'Invoiced'])])
         for order in orders:
             order.active = False
 
@@ -61,11 +61,11 @@ class Order(models.Model):
 
     def confirmOrder(self):
         self.sudo().checkStock()
-        self.state = 'C'
+        self.state = 'Confirmed'
 
     def invoiceOrder(self):
         self.createInvoice()
-        self.state = 'I'
+        self.state = 'Invoiced'
 
     def createInvoice(self):
         infoInvoice = {

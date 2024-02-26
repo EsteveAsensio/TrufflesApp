@@ -41,6 +41,10 @@
             groups="group_admins,group_workers"
             sequence="2"/>
 
+            <menuitem name="My Invoices" id="trufflesapp.menu_invoiceClient_list"
+            parent="trufflesapp.menu_root" action="trufflesapp.invoicesClient_action_window" 
+            groups="group_clients"/>
+
         <!-- menu categories-->
         <menuitem name="Order" id="trufflesapp.menu_order" parent="trufflesapp.menu_root" />
         <!-- actions -->
@@ -50,7 +54,8 @@
         
         <menuitem name="My Orders" id="trufflesapp.menu_orderClient_list"
             parent="trufflesapp.menu_root" action="trufflesapp.ordersClient_action_window" 
-            groups="group_clients"/>
+            groups="group_clients"
+            sequence="2"/>
         
     </data>
 </odoo>
