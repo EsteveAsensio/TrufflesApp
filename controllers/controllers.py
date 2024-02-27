@@ -106,12 +106,13 @@ class Trufflesapp(http.Controller):
             if invoice:
                 return {"status": 400, "error": "You dont have permissions to modify the invoice"}
             
+            state = response.get('state')
+            if state:
+                return {"status": 404, "error": "You cant change the state manually"}
+
             partner = request.env['res.partner'].sudo().browse(vendorid)
             if not partner.exists():
                 return {"status": 404, "error": "Vendor not found."}
-
-            if response.get('state') == 'Confirmed':
-                result.confirmOrder()
 
             result = http.request.env["trufflesapp.order"].sudo().create(response)
             data={
@@ -126,6 +127,27 @@ class Trufflesapp(http.Controller):
             }
             return data
 
+    #confirmar
+    @http.route('/trufflesapp/confirmOrder/<int:orderid>', type='http', auth='public', methods=['PUT'], csrf=False)
+    def confirmOrder(self, orderid):
+        order = request.env['trufflesapp.order'].sudo().browse(orderid)
+        try:
+            if not order.exists():
+                data = json.dumps({'status': 400, 'message': 'Order not found'})
+                return Response(data, content_type='application/json', status=400)
+            
+            if order.state == "Confirmed" or order.state == "Invoiced":
+                data = json.dumps({'status': 400, 'message': 'The order is alredy Confirmed or Invoiced'})
+                return Response(data, content_type='application/json', status=400)
+            
+            order.confirmOrder()
+
+            data = json.dumps({'status': 200, 'message': 'Order confirmed successfully'})
+            return Response(data, content_type='application/json', status=200)
+    
+        except Exception as error:
+            data = json.dumps({'status': 404, 'message': error})
+            return Response(data, content_type='application/json', status=400)
     
     #borrar
     @http.route('/trufflesapp/deleteOrder/<int:orderid>', type='http', auth='public', methods=['DELETE'], csrf=False)
@@ -158,6 +180,13 @@ class Trufflesapp(http.Controller):
                 }   
                 return data
             
+            if result.state == "Confirmed":
+                data={
+                "status":400,
+                "id":"You cant modify this order because is alredy Confirmed"
+                }   
+                return data
+            
             base = response.get('base')
             if base:
                 return {"status": 400, "error": "You cant change the price"}
@@ -169,21 +198,23 @@ class Trufflesapp(http.Controller):
             active = response.get('active')
             if active:
                 return {"status": 400, "error": "You dont have permissions to modify the active"}
+
+            vendor = response.get('vendor')
+            if not vendor:
+                return {"status": 400, "error": "The vendor is required"}
+
+            partner = request.env['res.partner'].sudo().browse(vendor)
+            if not partner.exists():
+                return {"status": 404, "error": "Vendor not found."}
             
             invoice = response.get('invoice')
             if invoice:
                 return {"status": 400, "error": "You dont have permissions to modify the invoice"}
 
-            if response.get('state') not in ['Draft', 'Confirmed']:
-                data={
-                    "status":400,
-                    "error":"Invalid state value. State must be Draft or Confirmed"
-                    }   
-                return data
+            state = response.get('state')
+            if state:
+                return {"status": 400, "error": "You cant change the state manually"}
             
-            if response.get('state') == 'Confirmed':
-                result.confirmOrder()
-
             result.sudo().write(response)
             data={
                 "status":200,
@@ -240,6 +271,13 @@ class Trufflesapp(http.Controller):
             order = request.env['trufflesapp.order'].sudo().browse(orderid)
             if not order.exists():
                 return {'status': 400, 'message': 'Order not found'}
+            
+            if order.state == "Confirmed":
+                data={
+                "status":400,
+                "id":"You cant modify this order because is alredy Confirmed"
+                }   
+                return data
 
             result = http.request.env["trufflesapp.orderlines"].sudo().create(response)
             data={
@@ -299,6 +337,28 @@ class Trufflesapp(http.Controller):
                 "error":"Yo cant change the total price"
                 }
                 return data
+                        
+            if response.get('priceProduct'):
+                data={
+                "status":400,
+                "error":"Yo cant change the price of the product"
+                }
+                return data
+            
+            if response.get('orderid'):
+                data={
+                "status":400,
+                "error":"Yo cant change the order id in this request"
+                }
+                return data
+
+            productid = response.get('productid')
+            if not productid:
+                return {"status": 400, "error": "Is necessary to specify the product id"}
+            
+            product = request.env['trufflesapp.product'].sudo().browse(productid)
+            if not product.exists():
+                return {'status': 400, 'message': 'Product not found'}
 
             result.sudo().write(response)
             data={
@@ -374,58 +434,3 @@ class Trufflesapp(http.Controller):
             result = {"status": 400, "message": "It is necessary to enter a partner id"}
             return Response(json.dumps(result), content_type='application/json', status=400)
     
-    '''
-    #añadir
-        
-    #Confirmar
-    @http.route('/trufflesapp/confirmOrder', type='json', auth='public', methods=['POST'], csrf=False)
-    def confirmOrder(self, orderid):
-        order = request.env['trufflesapp.order'].sudo().browse(orderid)
-        if order:
-            try:
-                order.confirmOrder()
-                data={
-                    "status":201,
-                    "message":'Order confirmed'
-                }
-                return data
-            except Exception as error:
-                data={
-                    "status":400,
-                    "error":error
-                }
-                return data
-        else:
-            data={
-                    "status":404,
-                    "error":"Order not found"
-                }
-            return data
-
-    #Invoiced
-    @http.route('/trufflesapp/invoiceOrder', type='json', auth='public', methods=['POST'], csrf=False)
-    def invoiceOrder(self, orderid):
-        order = request.env['trufflesapp.order'].sudo().browse(orderid)
-        if order:
-            try:
-                order.invoiceOrder()
-                data={
-                    "status":201,
-                    "message":'Order confirmed'
-                }
-                return data
-            except Exception as error:
-                data={
-                    "status":400,
-                    "error":error
-                }
-                return data
-        else:
-            data={
-                    "status":404,
-                    "error":"Order not found"
-                }
-            return data
-
-
-    '''
