@@ -158,6 +158,22 @@ class Trufflesapp(http.Controller):
                 }   
                 return data
             
+            base = response.get('base')
+            if base:
+                return {"status": 400, "error": "You cant change the price"}
+            
+            totalIva = response.get('totalIva')
+            if totalIva:
+                return {"status": 400, "error": "You cant change the price"}
+            
+            active = response.get('active')
+            if active:
+                return {"status": 400, "error": "You dont have permissions to modify the active"}
+            
+            invoice = response.get('invoice')
+            if invoice:
+                return {"status": 400, "error": "You dont have permissions to modify the invoice"}
+
             if response.get('state') not in ['Draft', 'Confirmed']:
                 data={
                     "status":400,
@@ -199,6 +215,45 @@ class Trufflesapp(http.Controller):
         result = {"status": 200, "result":orderLineInfo}
         return http.Response(json.dumps(result).encode("utf8"),mimetype="application/json")
          
+    #añadir
+    @http.route('/trufflesapp/addOrderLine', type='json', auth='public', methods=['POST'], csrf=False)
+    def addOrderLine(self, **kw):
+        response = request.httprequest.json
+        try:
+
+            productid = response.get('productid')
+            if not productid:
+                return {"status": 400, "error": "Is necessary to specify the product id"}
+            
+            product = request.env['trufflesapp.product'].sudo().browse(productid)
+            if not product.exists():
+                return {'status': 400, 'message': 'Product not found'}
+
+            mesure = response.get('mesure')
+            if not mesure:
+                return {"status": 400, "error": "Is necessary to specify the type of mesure"}
+            
+            orderid = response.get('orderid')
+            if not orderid:
+                return {"status": 400, "error": "Is necessary to specify the order id"}
+            
+            order = request.env['trufflesapp.order'].sudo().browse(orderid)
+            if not order.exists():
+                return {'status': 400, 'message': 'Order not found'}
+
+            result = http.request.env["trufflesapp.orderlines"].sudo().create(response)
+            data={
+                "status":201,
+                "id":result.id
+            }
+            return data
+        except Exception as error:
+            data={
+                "status":404,
+                "error":error
+            }
+            return data
+
     #borrar
     @http.route('/trufflesapp/deleteOrderLine/<int:lineid>', type='http', auth='public', methods=['DELETE'], csrf=False)
     def deleteOrderLine(self, lineid):
@@ -318,22 +373,6 @@ class Trufflesapp(http.Controller):
         else:
             result = {"status": 400, "message": "It is necessary to enter a partner id"}
             return Response(json.dumps(result), content_type='application/json', status=400)
-        
-    #get
-    @http.route(['/trufflesapp/getInvoice/<int:clientid>'], auth='public', type="http")
-    def getInvoice(self, clientid=None, **kw):
-        if clientid:
-            domain=[("id","=",clientid)]
-        else:
-            result = {"status": 400, "result":"Is necessary to enter an id"}
-            return http.Response(json.dumps(result).encode("utf8"),mimetype="application/json")
-
-        invoiceInfo = http.request.env["trufflesapp.invoice"].sudo().search_read(domain,["name", "description", "base", "iva", "totalIva", "state", "customer"])
-        if not invoiceInfo:
-            data = json.dumps({'status': 400, 'message': 'Invoice not found'})
-            return Response(data, content_type='application/json', status=400)
-        result = {"status": 200, "result":invoiceInfo}
-        return http.Response(json.dumps(result).encode("utf8"),mimetype="application/json")
     
     '''
     #añadir
