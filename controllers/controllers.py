@@ -180,10 +180,10 @@ class Trufflesapp(http.Controller):
                 }   
                 return data
             
-            if result.state == "Confirmed":
+            if result.state == "Confirmed" or result.state == "Invoiced":
                 data={
                 "status":400,
-                "id":"You cant modify this order because is alredy Confirmed"
+                "error":"You cant modify this order because is alredy Confirmed or Invoiced"
                 }   
                 return data
             
@@ -272,10 +272,10 @@ class Trufflesapp(http.Controller):
             if not order.exists():
                 return {'status': 400, 'message': 'Order not found'}
             
-            if order.state == "Confirmed":
+            if order.state == "Confirmed" or order.state == "Invoiced":
                 data={
                 "status":400,
-                "id":"You cant modify this order because is alredy Confirmed"
+                "id":"You cant modify this order because is alredy Confirmed or Invoiced"
                 }   
                 return data
 
