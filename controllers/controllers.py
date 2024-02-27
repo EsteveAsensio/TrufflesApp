@@ -297,12 +297,33 @@ class Trufflesapp(http.Controller):
     #   
     #Invoice
     #
+
+    #get
+    @http.route(['/trufflesapp/getInvoice/<int:partner_id>'], auth='public', type="http")
+    def getInvoice(self, partner_id=None, **kw):
+        if partner_id:
+            partner = request.env['res.partner'].sudo().browse(partner_id)
+            if not partner.exists():
+                result = {"status": 400, "result":"Customer not found"}
+                return http.Response(json.dumps(result).encode("utf8"),mimetype="application/json")
+
+            invoices = request.env["trufflesapp.invoice"].sudo().search([('customer', '=', partner_id)])
+            if not invoices:
+                result = {"status": 400, "result":"No invoices found for this customer"}
+                return http.Response(json.dumps(result).encode("utf8"),mimetype="application/json")
+
+            invoice_data = invoices.read(["name", "description", "base", "iva", "totalIva", "state", "customer"])
+            result = {"status": 200, "result": invoice_data}
+            return http.Response(json.dumps(result).encode("utf8"),mimetype="application/json")
+        else:
+            result = {"status": 400, "message": "It is necessary to enter a partner id"}
+            return Response(json.dumps(result), content_type='application/json', status=400)
         
     #get
-    @http.route(['/trufflesapp/getInvoice/<int:invoiceid>'], auth='public', type="http")
-    def getInvoice(self, invoiceid=None, **kw):
-        if invoiceid:
-            domain=[("id","=",invoiceid)]
+    @http.route(['/trufflesapp/getInvoice/<int:clientid>'], auth='public', type="http")
+    def getInvoice(self, clientid=None, **kw):
+        if clientid:
+            domain=[("id","=",clientid)]
         else:
             result = {"status": 400, "result":"Is necessary to enter an id"}
             return http.Response(json.dumps(result).encode("utf8"),mimetype="application/json")
