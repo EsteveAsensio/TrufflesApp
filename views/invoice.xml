@@ -55,6 +55,13 @@
                             <page string="Invoice Lines">
                                 <field name="lines"
                                     attrs="{'readonly': [('state', '=', 'Confirmed')]}">
+                                    <tree>
+                                        <field name="productid" />
+                                        <field name="units" />
+                                        <field name="weight" />
+                                        <field name="mesure" />
+                                        <field name="totalprice" />
+                                    </tree>
                                     <form>
                                         <group name="father_group">
                                             <group name="left_group">

@@ -58,6 +58,13 @@
                             <page string="Products">
                                 <field name="lines"
                                     attrs="{'readonly': [('state', 'in', ('Confirmed', 'Invoiced'))]}">
+                                    <tree>
+                                        <field name="productid" />
+                                        <field name="units" />
+                                        <field name="weight" />
+                                        <field name="mesure" />
+                                        <field name="totalprice" />
+                                    </tree>
                                     <form>
                                         <group name="father_group">
                                             <group name="left_group">

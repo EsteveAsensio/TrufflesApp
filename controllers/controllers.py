@@ -94,6 +94,10 @@ class Trufflesapp(http.Controller):
             if base:
                 return {"status": 400, "error": "You cant change the price"}
             
+            lines = response.get('lines')
+            if lines:
+                return {"status": 400, "error": "You cant add the lines"}
+            
             totalIva = response.get('totalIva')
             if totalIva:
                 return {"status": 400, "error": "You cant change the price"}
